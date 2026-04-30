@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+
+    <style>
+         body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: lightblue;
+    }
+
+    .wrapper {
+        width: 420px;
+        background: lightgray;
+    }
+
+    .wrapper h1 {
+        font-size: 36px;
+        text-align: center;
+    }
+
+    .wrapper .input-box {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        margin: 30px 0;
+    }
+
+    .input-box input {
+        width: 100%;
+        height: 50px;
+        background: transparent;
+        border: none;
+        outline: none;
+        border: 2px solid rgba(255, 255, 255, .2);
+        border-radius: 40px;
+        font-size: 16px;
+        color: #fff;
+        padding: 20px 45px 20px 20px;
+
+    }
+
+    .input-box input::placeholder {
+        color: #fff;
+    }
+
+    .input-box i {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+    }
+    
+    </style>
+
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content = "IE=edge">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <title> SEBS - Login </title>
+
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+
+
+<body>
+
+    <div class="wrapper">
+
+        <form action="">
+            <h1>SEBS LOGIN PAGE</h1>
+            <!-- typing box with username and password-->
+            <div class="input-box">
+                <input type="text" placeholder="Username" 
+                required >
+                <i class="bx bx-user-square"> </i>
+            
+            </div>
+
+            <div class="input-box">
+            
+                <input type="password" placeholder="Password" 
+                required >
+                <i class="bx bx-lock" > </i>
+            </div>
+
+            <!-- the button to submit login info -->
+            <button type="submit" class="button" >Login </button>
+        </form>
+    </div>
+
+</body>
+
+</html>
