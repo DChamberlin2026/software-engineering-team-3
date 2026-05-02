@@ -1,4 +1,4 @@
-
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,14 +120,23 @@
 
     <div class="center">
         <div class="wrapper">
-            <form action="">
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
                 <h1>SEBS LOGIN PAGE</h1>
+                {% if messages %}
+            {% for message in messages %}
+            <div style="background:#f5c6cb; border: 2px solid black; border-radius: 12px; padding: 10px 16px; margin-bottom: 20px; font-size: 13px; color: black;">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+                
                 <div class="input-box">
-                    <input type="text" placeholder="Username" required>
+                    <input type="text" name="username" placeholder="Username" required>
                     <i class="bx bx-user-square"></i>
                 </div>
                 <div class="input-box">
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="Password" required>
                     <i class="bx bx-lock"></i>
                 </div>
                 <button type="submit" class="button">Login</button>
