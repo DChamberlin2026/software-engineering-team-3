@@ -1,0 +1,265 @@
+Here's the full Django-ready code:
+django{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEBS - Admin Dashboard</title>
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            background-color: #4a90d9;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: lightgray;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 { font-size: 20px; color: black; }
+
+        .logout-btn {
+            background: #4a90d9;
+            color: black;
+            border: none;
+            padding: 10px 28px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .main { padding: 40px 60px; width: 100%; }
+
+        .welcome {
+            font-size: 20px;
+            color: black;
+            margin-bottom: 30px;
+            background: lightgray;
+            padding: 16px 24px;
+            border-radius: 12px;
+        }
+
+        .admin-badge {
+            font-size: 11px;
+            background: #4a90d9;
+            border: 2px solid black;
+            border-radius: 40px;
+            padding: 3px 14px;
+            margin-left: 12px;
+            vertical-align: middle;
+        }
+
+        .section {
+            background: lightgray;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 24px;
+        }
+
+        .section-title { font-size: 18px; color: black; margin-bottom: 20px; }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th {
+            text-align: left;
+            font-size: 11px;
+            color: #555;
+            padding: 0 12px 10px 12px;
+            border-bottom: 2px solid black;
+        }
+
+        td {
+            padding: 12px;
+            font-size: 13px;
+            color: black;
+            border-bottom: 1px solid #bbb;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        .badge {
+            font-size: 11px;
+            padding: 3px 12px;
+            border: 2px solid black;
+            border-radius: 40px;
+        }
+
+        .btn-manage {
+            padding: 6px 16px;
+            background: #4a90d9;
+            color: black;
+            border: none;
+            border-radius: 40px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .no-data { color: #555; font-size: 14px; }
+
+        .messages { margin-bottom: 24px; }
+        .message-error {
+            background: #f5c6cb;
+            border: 2px solid black;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: black;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .message-success {
+            background: #a8d5a2;
+            border: 2px solid black;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: black;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h1>SEBS</h1>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </nav>
+
+    <div class="main">
+
+        <div class="welcome">
+            Admin Panel <span class="admin-badge">Administrator</span>
+        </div>
+
+        <!-- MESSAGES -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="{% if message.tags == 'error' %}message-error{% else %}message-success{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- ALL ACCOUNTS -->
+        <div class="section">
+            <div class="section-title">All Accounts</div>
+            {% if accounts %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Account Name</th>
+                        <th>Account Number</th>
+                        <th>Type</th>
+                        <th>Owner</th>
+                        <th>Balance</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in accounts %}
+                    <tr>
+                        <td>{{ account.account_name }}</td>
+                        <td>{{ account.account_number }}</td>
+                        <td><span class="badge">{{ account.get_account_type_display }}</span></td>
+                        <td>{{ account.owner.first_name }} {{ account.owner.last_name }}</td>
+                        <td>${{ account.balance|floatformat:2 }}</td>
+                        <td>
+                            <a href="{% url 'admin_manage_account' account.id %}">
+                                <button class="btn-manage">Manage</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="no-data">No accounts found.</p>
+            {% endif %}
+        </div>
+
+        <!-- TRANSACTION LOG -->
+        <div class="section">
+            <div class="section-title">Transaction Log</div>
+            {% if transactions %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Account</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in transactions %}
+                    <tr>
+                        <td>{{ tx.transaction_date|date:"m/d/Y" }}</td>
+                        <td>{{ tx.account.owner.first_name }} {{ tx.account.owner.last_name }}</td>
+                        <td>{{ tx.account.account_name }}</td>
+                        <td><span class="badge">{{ tx.get_transaction_type_display }}</span></td>
+                        <td>${{ tx.amount|floatformat:2 }}</td>
+                        <td>{{ tx.description|default:"—" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="no-data">No transactions found.</p>
+            {% endif %}
+        </div>
+
+        <!-- ACTIVITY LOG -->
+        <div class="section">
+            <div class="section-title">Activity Log</div>
+            {% if logs %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td>{{ log.action_datetime|date:"m/d/Y H:i" }}</td>
+                        <td>{{ log.user.first_name }} {{ log.user.last_name|default:"Unknown" }}</td>
+                        <td><span class="badge">{{ log.get_action_type_display }}</span></td>
+                        <td>{{ log.details|default:"—" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="no-data">No activity logged yet.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+</body>
+</html>
