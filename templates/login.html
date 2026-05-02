@@ -16,6 +16,19 @@
 
     <style>
 
+        .navbar {
+            background: lightgray;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 20px;
+            color: black;
+        }
+
 
         * {
             box-sizing: border-box;
@@ -25,10 +38,17 @@
 
         body {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             min-height: 100vh;
             background-color: #4a90d9;
+        }
+
+
+        .center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .wrapper {
@@ -94,28 +114,25 @@
 
 <body>
 
-    <div class="wrapper">
+    <nav class="navbar">
+        <h1>SEBS</h1>
+    </nav>
 
-        <form action="">
-            <h1>SEBS LOGIN PAGE</h1>
-            <!-- typing box with username and password-->
-            <div class="input-box">
-                <input type="text" placeholder="Username" 
-                required >
-                <i class="bx bx-user-square"> </i>
-            
-            </div>
-
-            <div class="input-box">
-            
-                <input type="password" placeholder="Password" 
-                required >
-                <i class="bx bx-lock" > </i>
-            </div>
-
-            <!-- the button to submit login info -->
-            <button type="submit" class="button" >Login </button>
-        </form>
+    <div class="center">
+        <div class="wrapper">
+            <form action="">
+                <h1>SEBS LOGIN PAGE</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Username" required>
+                    <i class="bx bx-user-square"></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Password" required>
+                    <i class="bx bx-lock"></i>
+                </div>
+                <button type="submit" class="button">Login</button>
+            </form>
+        </div>
     </div>
 
 </body>
