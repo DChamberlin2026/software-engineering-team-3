@@ -5,68 +5,89 @@
 
 <head>
 
-    <style>
-         body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: lightblue;
-    }
-
-    .wrapper {
-        width: 420px;
-        background: lightgray;
-    }
-
-    .wrapper h1 {
-        font-size: 36px;
-        text-align: center;
-    }
-
-    .wrapper .input-box {
-        position: relative;
-        width: 100%;
-        height: 50px;
-        margin: 30px 0;
-    }
-
-    .input-box input {
-        width: 100%;
-        height: 50px;
-        background: transparent;
-        border: none;
-        outline: none;
-        border: 2px solid rgba(255, 255, 255, .2);
-        border-radius: 40px;
-        font-size: 16px;
-        color: #fff;
-        padding: 20px 45px 20px 20px;
-
-    }
-
-    .input-box input::placeholder {
-        color: #fff;
-    }
-
-    .input-box i {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 20px;
-    }
-    
-    </style>
-
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content = "IE=edge">
-    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> SEBS - Login </title>
 
     <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #4a90d9;
+        }
+
+        .wrapper {
+            width: 420px;
+            background: lightgray;
+            padding: 40px;
+            border-radius: 12px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+        }
+
+        .wrapper h1 {
+            font-size: 36px;
+            text-align: center;
+        }
+
+        .wrapper .input-box {
+            position: relative;
+            width: 100%;
+            height: 50px;
+            margin: 30px 0;
+        }
+
+        .input-box input {
+            width: 100%;
+            height: 50px;
+            background: transparent;
+            border: 2px solid black;
+            outline: none;
+            border-radius: 40px;
+            font-size: 16px;
+            color: black;
+            padding: 0px 45px 0px 20px;
+
+        }
+
+        .input-box input::placeholder {
+            color: black;
+        }
+
+        .input-box i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+
+        .button {
+            width: 100%;
+            height: 45px;
+            background: #4a90d9;
+            color: black;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    
+    </style>
 
 </head>
 
