@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEBS - Withdrawal Funds</title>
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            background-color: #4a90d9;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: lightgray;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 { font-size: 20px; color: black; }
+
+        .back-btn {
+            background: #4a90d9;
+            color: black;
+            border: none;
+            padding: 10px 28px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .main {
+            padding: 40px;
+            max-width: 520px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .card {
+            background: lightgray;
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        .card h2 {
+            font-size: 22px;
+            color: black;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+        .form-group label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+
+        .form-group select, .form-group input {
+            height: 50px;
+            padding: 0 20px;
+            border: 2px solid black;
+            border-radius: 40px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 14px;
+            color: black;
+            background: transparent;
+            outline: none;
+            width: 100%;
+        }
+
+        .form-group input::placeholder { color: black; }
+
+        .btn-submit {
+            width: 100%;
+            height: 50px;
+            background: #4a90d9;
+            color: black;
+            border: none;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .btn-cancel {
+            width: 100%;
+            height: 50px;
+            background: transparent;
+            color: black;
+            border: 2px solid black;
+            border-radius: 40px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        .message-error {
+            background: #f5c6cb;
+            border: 2px solid black;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: black;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .message-success {
+            background: #a8d5a2;
+            border: 2px solid black;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: black;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h1>SEBS</h1>
+        <a href="{% url 'dashboard' %}">
+            <button class="back-btn">← Dashboard</button>
+        </a>
+    </nav>
+
+    <div class="main">
+        <div class="card">
+            <h2>Withdrawal Funds</h2>
+
+            <!-- ERROR / SUCCESS MESSAGES -->
+            {% if messages %}
+                {% for message in messages %}
+                <div class="{% if message.tags == 'error' %}message-error{% else %}message-success{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST" action="{% url 'withdrawal' %}">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Account</label>
+                    <select name="account_id" required>
+                        {% for account in accounts %}
+                        <option value="{{ account.id }}"
+                            {% if == selected_account.id == account.id %}selected{% endif %}>
+                            {{ account.account_name }} — ${{ account.balance|floatformat:2 }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" name="amount" placeholder="$0.00"
+                           min="0.01" step="0.01"
+                           value="{{ last_amount|default:'' }}" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Withdrawal</button>
+            </form>
+
+            <a href="{% url 'dashboard' %}">
+                <button class="btn-cancel">Cancel</button>
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>

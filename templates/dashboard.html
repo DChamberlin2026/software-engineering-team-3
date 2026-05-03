@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEBS - Dashboard</title>
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            background-color: #4a90d9;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: lightgray;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 { font-size: 20px; color: black; }
+
+        .logout-btn {
+            background: #4a90d9;
+            color: black;
+            border: none;
+            padding: 10px 28px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .main { padding: 40px 60px; width: 100%; }
+
+        .welcome {
+            font-size: 20px;
+            color: black;
+            margin-bottom: 30px;
+            background: lightgray;
+            padding: 16px 24px;
+            border-radius: 12px;
+        }
+
+        .messages { margin-bottom: 24px; }
+
+        .message-error {
+            background: #f5c6cb;
+            border: 2px solid black;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: black;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .message-success {
+            background: #a8d5a2;
+            border: 2px solid black;
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: black;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        /* ACCOUNT CARDS */
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .account-card {
+            background: lightgray;
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .acct-type { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .acct-name { font-size: 18px; color: black; margin-bottom: 4px; }
+        .acct-number { font-size: 12px; color: #555; margin-bottom: 16px; }
+        .balance-label { font-size: 11px; color: #555; margin-bottom: 4px; }
+        .balance { font-size: 28px; color: black; margin-bottom: 20px; }
+
+        .card-actions { display: flex; gap: 10px; }
+
+        .btn-deposit {
+            flex: 1;
+            padding: 10px 0;
+            border: none;
+            border-radius: 40px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 13px;
+            cursor: pointer;
+            background: #4a90d9;
+            color: black;
+        }
+
+        .btn-withdraw {
+            flex: 1;
+            padding: 10px 0;
+            border: 2px solid black;
+            border-radius: 40px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 13px;
+            cursor: pointer;
+            background: transparent;
+            color: black;
+        }
+
+        .btn-detail {
+            width: 100%;
+            padding: 10px 0;
+            border: 2px solid black;
+            border-radius: 40px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 13px;
+            cursor: pointer;
+            background: transparent;
+            color: black;
+            margin-top: 10px;
+        }
+
+        /* TRANSFER */
+        .transfer-section {
+            background: lightgray;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 24px;
+        }
+
+        .section-title { font-size: 18px; color: black; margin-bottom: 20px; }
+
+        .transfer-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+
+        .form-group select, .form-group input {
+            height: 50px;
+            padding: 0 20px;
+            border: 2px solid black;
+            border-radius: 40px;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 13px;
+            color: black;
+            background: transparent;
+            outline: none;
+            width: 100%;
+        }
+
+        .form-group input::placeholder { color: black; }
+
+        .btn-transfer {
+            height: 50px;
+            padding: 0 24px;
+            background: #4a90d9;
+            color: black;
+            border: none;
+            font-family: 'Copperplate', 'Copperplate Gothic Light', fantasy;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* HISTORY */
+        .history-section {
+            background: lightgray;
+            border-radius: 12px;
+            padding: 40px;
+        }
+
+        .tx-table { width: 100%; border-collapse: collapse; }
+        .tx-table th { text-align: left; font-size: 11px; color: #555; padding: 0 12px 10px 12px; border-bottom: 2px solid black; }
+        .tx-table td { padding: 12px; font-size: 13px; color: black; border-bottom: 1px solid #bbb; }
+        .tx-table tr:last-child td { border-bottom: none; }
+        .tx-badge { font-size: 11px; padding: 3px 12px; border: 2px solid black; border-radius: 40px; }
+        .tx-amount-pos { color: #2d7a2d; }
+        .tx-amount-neg { color: #c0392b; }
+        .no-transactions { color: #555; font-size: 14px; }
+        .no-accounts { color: #555; font-size: 14px; }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h1>SEBS</h1>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </nav>
+
+    <div class="main">
+
+        <!-- WELCOME -->
+        <div class="welcome">Welcome back, {{ user.first_name }} {{ user.last_name }}</div>
+
+        <!-- MESSAGES -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="{% if message.tags == 'error' %}message-error{% else %}message-success{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- ACCOUNT CARDS -->
+        {% if accounts %}
+        <div class="accounts-grid">
+            {% for account in accounts %}
+            <div class="account-card">
+                <div class="acct-type">{{ account.get_account_type_display }}</div>
+                <div class="acct-name">{{ account.account_name }}</div>
+                <div class="acct-number">Acct # {{ account.account_number }}</div>
+                <div class="balance-label">Current Balance</div>
+                <div class="balance">${{ account.balance|floatformat:2 }}</div>
+                <div class="card-actions">
+                    <a href="{% url 'deposit' account.id %}">
+                        <button class="btn-deposit">Deposit</button>
+                    </a>
+                    <a href="{% url 'withdraw' account.id %}">
+                        <button class="btn-withdraw">Withdraw</button>
+                    </a>
+                </div>
+                <a href="{% url 'account_detail' account.id %}">
+                    <button class="btn-detail">View Details</button>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="account-card" style="margin-bottom: 24px;">
+            <p class="no-accounts">No accounts found.</p>
+        </div>
+        {% endif %}
+
+        <!-- TRANSFER -->
+        {% if accounts|length > 1 %}
+        <div class="transfer-section">
+            <div class="section-title">Transfer Funds</div>
+            <form method="POST" action="{% url 'transfer' %}">
+                {% csrf_token %}
+                <div class="transfer-form">
+                    <div class="form-group">
+                        <label>From</label>
+                        <select name="source_account_id" required>
+                            {% for account in accounts %}
+                            <option value="{{ account.id }}">
+                                {{ account.account_name }} — ${{ account.balance|floatformat:2 }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>To</label>
+                        <select name="destination_account_id" required>
+                            {% for account in accounts %}
+                            <option value="{{ account.id }}">
+                                {{ account.account_name }} — ${{ account.balance|floatformat:2 }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" name="amount" placeholder="$0.00"
+                               min="0.01" step="0.01" required>
+                    </div>
+                    <button type="submit" class="btn-transfer">Transfer</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- TRANSACTION HISTORY -->
+        <div class="history-section">
+            <div class="section-title">Recent Transactions</div>
+            {% if transactions %}
+            <table class="tx-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Account</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in transactions %}
+                    <tr>
+                        <td>{{ tx.transaction_date|date:"m/d/Y" }}</td>
+                        <td>{{ tx.description|default:"—" }}</td>
+                        <td><span class="tx-badge">{{ tx.get_transaction_type_display }}</span></td>
+                        <td>{{ tx.account.account_name }}</td>
+                        <td class="{% if tx.amount > 0 %}tx-amount-pos{% else %}tx-amount-neg{% endif %}">
+                            {% if tx.amount > 0 %}+{% endif %}${{ tx.amount|floatformat:2 }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="no-transactions">No transactions yet.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+</body>
+</html>
