@@ -1,22 +1,21 @@
-"""
-URL configuration for sebs_project project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 
+from banking import views
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path("", views.login_view, name="login"),
+    path("login/", views.login_view, name="login"),
+    path("logout/", views.logout_view, name="logout"),
+    path("dashboard/", views.dashboard_view, name="dashboard"),
+    path("accounts/<int:account_id>/", views.account_detail_view, name="account_detail"),
+    path("deposit/", views.deposit_view, name="deposit"),
+    path("deposit/<int:account_id>/", views.deposit_view, name="deposit"),
+    path("withdrawal/", views.withdrawal_view, name="withdrawal"),
+    path("withdraw/<int:account_id>/", views.withdrawal_view, name="withdraw"),
+    path("transfer/", views.transfer_view, name="transfer"),
+    path("history/", views.transaction_history_view, name="transaction_history"),
+    path("admin-dashboard/", views.admin_dashboard_view, name="admin_dashboard"),
+    path("admin-dashboard/accounts/<int:account_id>/", views.admin_manage_account_view, name="admin_manage_account"),
 ]
