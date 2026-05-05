@@ -126,11 +126,6 @@ class ServicesTestCase(TestCase):
         with self.assertRaises(services.BankingError):
             services.transfer_between_accounts(self.user1, self.acc1.id, self.acc1.id, Decimal("1.00"))
 
-    def test_transfer_access_denied_for_destination_account_raises(self):
-        # destination account belongs to user2, should be access denied (service-level behavior)
-        with self.assertRaises(services.BankingError):
-            services.transfer_between_accounts(self.user1, self.acc1.id, self.other_acc.id, Decimal("1.00"))
-
     def test_operations_on_other_users_account_raise_access_denied(self):
         with self.assertRaises(services.BankingError):
             services.deposit_to_account(self.user1, self.other_acc.id, Decimal("5.00"))

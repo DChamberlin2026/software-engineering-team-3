@@ -1,5 +1,4 @@
 from decimal import Decimal, InvalidOperation
-
 from django.db import transaction
 
 from .models import Account, ActivityLog, Transaction
@@ -88,8 +87,14 @@ def transfer_between_accounts(user, source_account_id, destination_account_id, a
     if source_account_id == destination_account_id:
         raise BankingError("Source and destination accounts must be different")
 
+    # Source must belong to the requesting user
     source_account = _get_user_account_for_update(user, source_account_id)
-    destination_account = _get_user_account_for_update(user, destination_account_id)
+
+    # Destination may belong to another user; fetch without owner restriction
+    try:
+        destination_account = Account.objects.select_for_update().get(id=destination_account_id)
+    except Account.DoesNotExist:
+        raise BankingError("Destination account not found")
 
     if source_account.balance < amount:
         raise BankingError("Insufficient funds")
